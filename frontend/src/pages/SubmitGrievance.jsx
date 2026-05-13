@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Upload, CheckCircle2, AlertCircle, User, MapPin, Phone, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import QRCodePoster from '../components/QRCodePoster';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
 
 const SubmitGrievance = ({ admin = false }) => {
   const [formData, setFormData] = useState({
@@ -36,7 +38,7 @@ const SubmitGrievance = ({ admin = false }) => {
     if (file) data.append('pdf', file);
 
     try {
-      await axios.post('http://localhost:5000/api/grievances', data);
+      await axios.post(`${API_URL}/api/grievances`, data);
       setSubmitted(true);
     } catch (err) {
       setError('Something went wrong. Please try again later.');
@@ -128,7 +130,7 @@ const SubmitGrievance = ({ admin = false }) => {
 
         {!admin && (
           <div style={{ marginTop: '4rem' }}>
-            <QRCodePoster url={window.location.origin + '/submit'} />
+            <QRCodePoster url={FRONTEND_URL + '/submit'} />
           </div>
         )}
       </div>

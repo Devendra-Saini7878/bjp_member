@@ -6,7 +6,9 @@ import { io } from 'socket.io-client';
 import SubmitGrievance from './SubmitGrievance'; 
 import QRCodePoster from '../components/QRCodePoster';
 
-const socket = io('http://localhost:5000');
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+const socket = io(API_URL);
 
 const SummaryCard = ({ title, value, icon: Icon, color, delay }) => (
   <motion.div 
@@ -50,7 +52,7 @@ const GrievanceModal = ({ grievance, onClose, onUpdateStatus }) => {
           {grievance.pdfUrl && (
             <div className="detail-section full">
               <label>Attached Document</label>
-              <a href={`http://localhost:5000${grievance.pdfUrl}`} target="_blank" rel="noreferrer" className="btn-secondary">
+              <a href={`${API_URL}${grievance.pdfUrl}`} target="_blank" rel="noreferrer" className="btn-secondary">
                 <Download size={16} /> View PDF Document
               </a>
             </div>
@@ -144,7 +146,7 @@ const Dashboard = ({ view = 'all' }) => {
 
   const fetchGrievances = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/grievances');
+      const res = await axios.get(`${API_URL}/api/grievances`);
       setGrievances(res.data);
     } catch (err) {
       console.error('Error fetching:', err);
@@ -169,7 +171,7 @@ const Dashboard = ({ view = 'all' }) => {
         setSelectedGrievance(prev => ({ ...prev, status }));
       }
       
-      await axios.patch(`http://localhost:5000/api/grievances/${id}`, { status }); 
+      await axios.patch(`${API_URL}/api/grievances/${id}`, { status }); 
     } 
     catch (err) { 
       console.error('Error updating status:', err); 
@@ -215,7 +217,7 @@ const Dashboard = ({ view = 'all' }) => {
            <SubmitGrievance admin={true} />
         </div>
         <div className="qr-section">
-           <QRCodePoster url={window.location.origin + '/submit'} />
+           <QRCodePoster url={FRONTEND_URL + '/submit'} />
         </div>
       </div>
     </div>
