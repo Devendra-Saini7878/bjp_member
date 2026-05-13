@@ -50,12 +50,18 @@ router.post('/', upload.single('pdf'), async (req, res) => {
     
     // Emit real-time event
     const io = req.app.get('socketio');
-    io.emit('newGrievance', grievance);
+    if (io) {
+      io.emit('newGrievance', grievance);
+    }
     
     res.json(grievance);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error('Submission Error:', err);
+    res.status(500).json({ 
+      error: 'Server Error', 
+      message: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined 
+    });
   }
 });
 
