@@ -37,9 +37,22 @@ if (!fs.existsSync(uploadsDir)) {
 app.use('/uploads', express.static(uploadsDir));
 
 // DB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bjp_grievance')
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log('MongoDB Connection Error:', err));
+const dbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/bjp_grievance';
+console.log('Attempting to connect to MongoDB...');
+
+mongoose.connect(dbUri, {
+  serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+})
+  .then(() => console.log('✅ MongoDB Connected Successfully'))
+  .catch(err => {
+    console.error('❌ MongoDB Connection Error:', err.message);
+    if (err.message.includes('IP not whitelisted')) {
+      console.error('ACTION REQUIRED: Please whitelist 0.0.0.0/0 in MongoDB Atlas.');
+    }
+  });
+
+// Disable buffering to get immediate errors instead of timeouts
+mongoose.set('bufferCommands', false);
 
 // Socket.io Connection
 io.on('connection', (socket) => {
