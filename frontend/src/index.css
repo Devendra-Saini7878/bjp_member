@@ -343,6 +343,62 @@ select, .district-selector, .status-updater select {
 .status-in-progress { background: #EFF6FF; color: #1D4ED8; border: 1px solid #DBEAFE; }
 .status-high-priority { background: #FEF2F2; color: #B91C1C; border: 1px solid #FEE2E2; }
 
+/* Reports & Charts */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.chart-card {
+  padding: 2rem;
+  border-radius: 24px;
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.chart-header h4 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.chart-header p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.icon-wrap {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-wrap.saffron { background: #FFF5EB; color: var(--primary-saffron); }
+.icon-wrap.blue { background: #EFF6FF; color: var(--accent-blue); }
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .chart-card {
+    padding: 1.5rem;
+  }
+}
+
 /* Animations */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 .animate-fade { animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }

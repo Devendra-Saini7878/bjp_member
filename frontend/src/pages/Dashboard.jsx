@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Filter, MoreVertical, FileText, CheckCircle, Clock, AlertTriangle, Eye, Download, Search, Upload, User, MapPin, Phone, Mail } from 'lucide-react';
+import { Filter, MoreVertical, FileText, CheckCircle, Clock, AlertTriangle, Eye, Download, Search, Upload, User, MapPin, Phone, Mail, PieChart as PieIcon, BarChart as BarIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { io } from 'socket.io-client';
 import SubmitGrievance from './SubmitGrievance'; 
 import QRCodePoster from '../components/QRCodePoster';
@@ -137,6 +138,95 @@ const SettingsView = () => (
   </motion.div>
 );
 
+const ReportsView = ({ grievances }) => {
+  const getCategoryData = () => {
+    const counts = grievances.reduce((acc, g) => {
+      acc[g.category] = (acc[g.category] || 0) + 1;
+      return acc;
+    }, {});
+    return Object.keys(counts).map(cat => ({ name: cat, count: counts[cat] }));
+  };
+
+  const getStatusData = () => {
+    const counts = grievances.reduce((acc, g) => {
+      acc[g.status] = (acc[g.status] || 0) + 1;
+      return acc;
+    }, {});
+    const colors = {
+      'Pending': '#F59E0B',
+      'In Progress': '#3B82F6',
+      'Resolved': '#10B981',
+      'High Priority': '#EF4444'
+    };
+    return Object.keys(counts).map(status => ({ 
+      name: status, 
+      value: counts[status],
+      color: colors[status] || '#64748B'
+    }));
+  };
+
+  return (
+    <div className="reports-view animate-fade">
+      <div className="charts-grid">
+        <div className="card chart-card">
+          <div className="chart-header">
+            <div className="icon-wrap saffron"><BarIcon size={20} /></div>
+            <div>
+              <h4>Grievances by Category</h4>
+              <p>Department-wise distribution</p>
+            </div>
+          </div>
+          <div className="chart-body">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={getCategoryData()}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748B', fontSize: 11}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748B', fontSize: 11}} />
+                <Tooltip 
+                  cursor={{fill: '#f8fafc'}} 
+                  contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)'}}
+                />
+                <Bar dataKey="count" fill="var(--primary-saffron)" radius={[4, 4, 0, 0]} barSize={40} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="card chart-card">
+          <div className="chart-header">
+            <div className="icon-wrap blue"><PieIcon size={20} /></div>
+            <div>
+              <h4>Current Status Distribution</h4>
+              <p>Overall resolution progress</p>
+            </div>
+          </div>
+          <div className="chart-body">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={getStatusData()}
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {getStatusData().map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)'}}
+                />
+                <Legend iconType="circle" />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Dashboard = ({ view = 'all' }) => {
   const [grievances, setGrievances] = useState([]);
   const [filter, setFilter] = useState('All');
@@ -225,6 +315,7 @@ const Dashboard = ({ view = 'all' }) => {
 
   if (view === 'categories') return <CategoriesView grievances={grievances} />;
   if (view === 'settings') return <SettingsView />;
+  if (view === 'reports') return <ReportsView grievances={grievances} />;
 
   return (
     <div className="dashboard-page">
