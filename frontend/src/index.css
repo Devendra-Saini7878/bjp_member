@@ -91,6 +91,9 @@ input, select, textarea {
   box-shadow: var(--shadow-sm);
 }
 
+.header-left { display: flex; align-items: center; gap: 1rem; }
+.menu-toggle { display: none; color: var(--text-primary); padding: 0.5rem; border-radius: 8px; background: #F1F5F9; }
+
 .header-search { display: flex; align-items: center; gap: 0.75rem; background: #F1F5F9; padding: 0.6rem 1.25rem; border-radius: 12px; width: 400px; border: 1px solid transparent; transition: all 0.2s ease; }
 .header-search:focus-within { background: white; border-color: var(--primary-saffron-light); box-shadow: 0 0 0 4px rgba(255, 153, 51, 0.1); }
 .header-search input { border: none; background: transparent; padding: 0; width: 100%; font-size: 0.9rem; font-weight: 500; }
@@ -212,51 +215,67 @@ select, .district-selector, .status-updater select {
   .sidebar-logo { margin-bottom: 2.5rem; padding: 0; }
   .sidebar-item { justify-content: center; padding: 1rem; width: 50px; }
   .main-content { margin-left: 80px; padding: 1.5rem; }
-  .header-search { width: 300px; }
+  .header-search { width: 250px; }
 }
 
 @media (max-width: 768px) {
-  .header { padding: 0.75rem 1rem; top: 0; border-radius: 0; margin-bottom: 1.5rem; }
+  .menu-toggle { display: flex; }
+  .sidebar { 
+    transform: translateX(-100%); 
+    width: 280px; 
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sidebar.open { 
+    transform: translateX(0); 
+    visibility: visible; 
+  }
+  .sidebar.open .sidebar-item span, 
+  .sidebar.open .portal-info, 
+  .sidebar.open .menu-label { 
+    display: block; 
+  }
+  
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+  }
+
+  .main-content { margin-left: 0; padding: 1rem; width: 100%; }
+  .header { padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1.5rem; width: calc(100% - 0rem); left: 0; }
   .header-search { display: none; }
-  .summary-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .page-header { flex-direction: column; align-items: flex-start; gap: 2rem; margin-bottom: 3.5rem; }
-  .header-actions-row { width: 100%; flex-wrap: wrap; gap: 1rem; }
-  .search-box { width: 100%; }
-  .district-selector { width: 100%; justify-content: space-between; }
+  
+  .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; }
+  .header-actions-row { width: 100%; }
+  
+  .summary-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  
+  .profile-hero { flex-direction: column; text-align: center; gap: 1.5rem; }
+  .large-avatar { width: 120px; height: 120px; }
+  .hero-text h1 { font-size: 1.8rem; }
+  .profile-details-grid { grid-template-columns: 1fr; gap: 1rem; }
+  
   .form-grid { grid-template-columns: 1fr; }
-  .submit-header h1 { font-size: 1.8rem; }
-  .form-card { padding: 1.5rem; }
+  .modal-body { grid-template-columns: 1fr; padding: 1.5rem; }
+  .full { grid-column: span 1; }
 }
 
 @media (max-width: 480px) {
-  .sidebar { width: 0; padding: 0; border: none; visibility: hidden; }
-  .main-content { margin-left: 0; padding: 0.75rem; }
-  .header { 
-    margin: 0 0 1.5rem 0; 
-    top: 0; 
-    border-radius: 0; 
-    padding: 0.75rem 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    background: white;
-  }
-  .header-actions { width: 100%; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 0.75rem; }
+  .header { margin-bottom: 1rem; }
+  .header-actions { gap: 0.75rem; }
   .profile-name { display: none; }
-  .profile-section { padding: 0.25rem 0.5rem; border: none; background: transparent; }
+  .profile-section { padding: 0.25rem; border: none; background: transparent; }
+  .profile-image { width: 32px; height: 32px; }
   
-  .summary-grid { gap: 1rem; }
   .summary-card { padding: 1rem; }
   .icon-box { width: 40px; height: 40px; }
   .card-value { font-size: 1.25rem; }
   
-  .page-header h1 { font-size: 1.5rem; }
-  .table-header { padding: 1rem; }
-  .table-actions { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; display: flex; flex-wrap: nowrap; padding-bottom: 0.5rem; }
-  .table-actions button { flex: 0 0 auto; white-space: nowrap; }
-  
-  .submit-page { padding: 1.5rem 0.75rem; }
-  .submit-header h1 { font-size: 1.6rem; }
+  .table-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .table-actions { width: 100%; overflow-x: auto; }
 }
 
 /* Detailed Views Styles */

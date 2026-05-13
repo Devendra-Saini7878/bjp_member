@@ -6,6 +6,11 @@ import Dashboard from './pages/Dashboard';
 import SubmitGrievance from './pages/SubmitGrievance';
 
 function App() {
+  const [isSidebarOpen, setSidebarOpen] = React.useState(false);
+
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+  const closeSidebar = () => setSidebarOpen(false);
+
   return (
     <Router>
       <Routes>
@@ -16,10 +21,11 @@ function App() {
         <Route 
           path="*" 
           element={
-            <div className="app-container">
-              <Sidebar />
+            <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+              {isSidebarOpen && <div className="sidebar-overlay" onClick={closeSidebar}></div>}
+              <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
               <main className="main-content">
-                <Header />
+                <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
                 <Routes>
                   <Route path="/" element={<Dashboard view="all" />} />
                   <Route path="/requests" element={<Dashboard view="pending" />} />

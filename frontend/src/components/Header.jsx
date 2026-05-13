@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Bell, ChevronDown } from 'lucide-react';
+import { Search, Bell, ChevronDown, Menu, X } from 'lucide-react';
 import { io } from 'socket.io-client';
 import { NavLink } from 'react-router-dom';
 
 const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
 const socket = io(API_URL);
 
-const Header = () => {
+const Header = ({ toggleSidebar, isSidebarOpen }) => {
   const [notifications, setNotifications] = useState(0);
 
   useEffect(() => {
@@ -19,9 +19,14 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="header-search">
-        <Search size={18} color="var(--text-secondary)" />
-        <input type="text" placeholder="Global Search..." />
+      <div className="header-left">
+        <button className="menu-toggle" onClick={toggleSidebar}>
+          {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+        <div className="header-search">
+          <Search size={18} color="var(--text-secondary)" />
+          <input type="text" placeholder="Global Search..." />
+        </div>
       </div>
       
       <div className="header-actions">
