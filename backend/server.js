@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["http://localhost:5173", "http://localhost:5174", "https://bjp-member-7shc.vercel.app"],
     methods: ["GET", "POST", "PATCH"],
     credentials: true
   }
@@ -21,7 +21,10 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "http://localhost:5174", "https://bjp-member-7shc.vercel.app"],
+  credentials: true
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
