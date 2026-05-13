@@ -6,8 +6,8 @@ import { io } from 'socket.io-client';
 import SubmitGrievance from './SubmitGrievance'; 
 import QRCodePoster from '../components/QRCodePoster';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+const FRONTEND_URL = (import.meta.env.VITE_FRONTEND_URL || window.location.origin).replace(/\/$/, '');
 const socket = io(API_URL);
 
 const SummaryCard = ({ title, value, icon: Icon, color, delay }) => (

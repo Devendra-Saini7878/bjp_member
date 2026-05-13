@@ -3,7 +3,7 @@ import { Search, Bell, ChevronDown } from 'lucide-react';
 import { io } from 'socket.io-client';
 import { NavLink } from 'react-router-dom';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
 const socket = io(API_URL);
 
 const Header = () => {
