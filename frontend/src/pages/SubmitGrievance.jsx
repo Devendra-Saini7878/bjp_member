@@ -41,8 +41,9 @@ const SubmitGrievance = ({ admin = false }) => {
       await axios.post(`${API_URL}/api/grievances`, data);
       setSubmitted(true);
     } catch (err) {
-      setError('Something went wrong. Please try again later.');
-      console.error(err);
+      const msg = err.response?.data?.details || err.response?.data?.error || 'Something went wrong. Please try again later.';
+      setError(msg);
+      console.error('Submission Error:', err.response?.data || err.message);
     } finally {
       setLoading(false);
     }

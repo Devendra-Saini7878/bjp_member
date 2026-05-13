@@ -29,6 +29,8 @@ const upload = multer({
 // @desc    Submit a new grievance
 router.post('/', upload.single('pdf'), async (req, res) => {
   try {
+    console.log('Received Body:', req.body);
+    console.log('Received File:', req.file);
     const { name, city, district, description, contact, category } = req.body;
     
     // Generate a unique Request ID (e.g., REQ-1234)
