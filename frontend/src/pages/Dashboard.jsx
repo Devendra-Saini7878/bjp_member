@@ -154,13 +154,28 @@ const Dashboard = ({ view = 'all' }) => {
   useEffect(() => {
     fetchGrievances();
     socket.on('newGrievance', (data) => setGrievances(prev => [data, ...prev]));
-    socket.on('updateGrievance', (data) => setGrievances(prev => prev.map(g => g._id === data._id ? data : g)));
+    socket.on('updateGrievance', (data) => {
+      setGrievances(prev => prev.map(g => g._id === data._id ? data : g));
+      setSelectedGrievance(prev => (prev && prev._id === data._id) ? data : prev);
+    });
     return () => { socket.off('newGrievance'); socket.off('updateGrievance'); };
   }, []);
 
   const handleUpdateStatus = async (id, status) => {
-    try { await axios.patch(`http://localhost:5000/api/grievances/${id}`, { status }); } 
-    catch (err) { console.error('Error updating status:', err); }
+    try { 
+      // Optimistic Update
+      setGrievances(prev => prev.map(g => g._id === id ? { ...g, status } : g));
+      if (selectedGrievance && selectedGrievance._id === id) {
+        setSelectedGrievance(prev => ({ ...prev, status }));
+      }
+      
+      await axios.patch(`http://localhost:5000/api/grievances/${id}`, { status }); 
+    } 
+    catch (err) { 
+      console.error('Error updating status:', err); 
+      // Revert if failed (optional, but good for robustness)
+      fetchGrievances();
+    }
   };
 
   const filteredGrievances = grievances.filter(g => {
