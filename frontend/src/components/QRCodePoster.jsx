@@ -63,7 +63,7 @@ const QRCodePoster = ({ url, title = "आपका संदेश सिंध�
         </div>
 
         <div className="poster-footer">
-          <div className="minister-name">Hon'ble Union Minister Shri Jyotiraditya Scindia</div>
+          <div className="minister-name">Hon'ble Union Minister Shri Jyotiraditya M Scindia</div>
           <div className="office-tag">Minister's Office Digital Initiative</div>
         </div>
       </div>

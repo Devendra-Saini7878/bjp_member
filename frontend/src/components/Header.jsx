@@ -37,11 +37,11 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
         
         <NavLink to="/profile" className="profile-section">
           <div className="profile-info">
-            <p className="profile-name">Jyotiraditya Scindia</p>
+            <p className="profile-name">Jyotiraditya M Scindia</p>
             <p className="profile-role">Union Minister</p>
           </div>
           <div className="profile-image">
-            <img src="/Mr Scindia 4.png" alt="Shri Jyotiraditya Scindia" />
+            <img src="/Mr Scindia 4.png" alt="Shri Jyotiraditya M Scindia" />
           </div>
           <ChevronDown size={16} color="var(--text-secondary)" />
         </NavLink>
