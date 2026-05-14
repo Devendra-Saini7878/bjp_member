@@ -41,7 +41,7 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
             <p className="profile-role">Union Minister</p>
           </div>
           <div className="profile-image">
-            <img src="/minister.png" alt="Shri Jyotiraditya Scindia" />
+            <img src="/Mr Scindia 4.png" alt="Shri Jyotiraditya Scindia" />
           </div>
           <ChevronDown size={16} color="var(--text-secondary)" />
         </NavLink>

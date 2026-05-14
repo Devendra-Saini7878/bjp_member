@@ -78,7 +78,7 @@ const GrievanceModal = ({ grievance, onClose, onUpdateStatus }) => {
 const ProfileView = () => (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="profile-view card">
     <div className="profile-hero">
-      <img src="/minister.png" alt="Jyotiraditya Scindia" className="large-avatar" />
+      <img src="/Mr Scindia 4.png" alt="Jyotiraditya Scindia" className="large-avatar" />
       <div className="hero-text">
         <h1>Shri Jyotiraditya Scindia</h1>
         <p className="role">Union Minister of Communications & North Eastern Region</p>
